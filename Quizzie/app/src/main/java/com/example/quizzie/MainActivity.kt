@@ -16,7 +16,7 @@ class MainActivity : AppCompatActivity() {
 
     private var currentQuestionIndex = 0
     private var score = 0
-    private val timerDuration: Long = 30000 // 30 seconds for each question
+    private val timerDuration: Long = 30000
     private lateinit var timer: CountDownTimer
 
     private val questions = arrayListOf(
@@ -42,26 +42,27 @@ class MainActivity : AppCompatActivity() {
             if (currentQuestionIndex < questions.size) {
                 loadQuestion()
             } else {
+                timer.cancel()
                 showResultDialog()
             }
         }
     }
 
     private fun loadQuestion() {
-        // Cancel the timer if it has been initialized
+        // cancel the timer if it has been initialized
         if (::timer.isInitialized) {
             timer.cancel()
         }
         startTimer(timerDuration)
 
-        // Clear radio buttons
+        // clear radio buttons
         radioGroup.removeAllViews()
 
-        // Load the question
+        // load the question
         val currentQuestion = questions[currentQuestionIndex]
         questionText.text = currentQuestion.questionText
 
-        // Dynamically add radio buttons for each answer option
+        //radio buttons for each answer option
         for ((index, answer) in currentQuestion.answers.withIndex()) {
             val radioButton = RadioButton(this)
             radioButton.text = answer
@@ -69,7 +70,7 @@ class MainActivity : AppCompatActivity() {
             radioGroup.addView(radioButton)
         }
 
-        // Change button text to "Done" on the last question
+
         if (currentQuestionIndex == questions.size - 1) {
             nextButton.text = "Done"
         } else {
@@ -120,7 +121,7 @@ class MainActivity : AppCompatActivity() {
         }
 
         builder.setNegativeButton("Quit") { _, _ ->
-            finish() // Ends the activity
+            finish()
         }
 
         val dialog = builder.create()
